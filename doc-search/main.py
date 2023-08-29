@@ -5,12 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from llama_index import (
-    VectorStoreIndex,
-    SimpleDirectoryReader,
-    StorageContext,
-    load_index_from_storage,
-)
+from llama_index import (SimpleDirectoryReader, StorageContext,
+                         VectorStoreIndex, load_index_from_storage)
 
 PERSIST_DIR = os.getenv("PERSIST_DIR", "~/.doc-search/storage")
 
@@ -44,10 +40,6 @@ def rebuild_index_from_disk() -> VectorStoreIndex:
     return index
 
 
-def convert_argparse_directory_to_absolute_path(directory):
-    return os.path.abspath(directory)
-
-
 if __name__ == "__main__":
     # Using argparse, either build a new index or search the index.
     # Build is a parameter that takes a directory, whereas for search you don't need any
@@ -57,7 +49,7 @@ if __name__ == "__main__":
         "--build",
         dest="build_directory",
         action="store",
-        type=convert_argparse_directory_to_absolute_path,
+        type=os.path.abspath,
         help="Build a new index from the given directory",
     )
     parser.add_argument(
